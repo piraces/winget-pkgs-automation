@@ -151,29 +151,29 @@ Write-Output "Number of package updates found: $($UpgradeObject.Count)`nPackages
 $UpgradeObject.ForEach({
     Write-Output "-> $($_.PackageIdentifier)"
 })
-Set-Location -Path .\winget-pkgs\Tools
-ForEach ($Upgrade in $UpgradeObject) {
-    Write-Output -InputObject $Upgrade | Format-List -Property *
-    try {
-        If ($Upgrade.YamlCreateParams.AutoUpgrade -eq $true -and $Upgrade.YamlCreateParams.SkipPRCheck -eq $false -and $Upgrade.YamlCreateParams.DeletePreviousVersion -eq $false) {
-            .\YamlCreate.ps1 -InputObject $Upgrade -AutoUpgrade
-        } ElseIf ($Upgrade.YamlCreateParams.AutoUpgrade -eq $false -and $Upgrade.YamlCreateParams.SkipPRCheck -eq $true -and $Upgrade.YamlCreateParams.DeletePreviousVersion -eq $false) {
-            .\YamlCreate.ps1 -InputObject $Upgrade -SkipPRCheck
-        } ElseIf ($Upgrade.YamlCreateParams.AutoUpgrade -eq $false -and $Upgrade.YamlCreateParams.SkipPRCheck -eq $false -and $Upgrade.YamlCreateParams.DeletePreviousVersion -eq $true) {
-            .\YamlCreate.ps1 -InputObject $Upgrade -DeletePreviousVersion
-        } Else {
-            .\YamlCreate.ps1 -InputObject $Upgrade
-        }
-    } catch {
-        Write-Error "$($Upgrade.PackageIdentifier): $($_.Exception.Message)"
-        $ErrorUpgradingPkgs += @("- $($Upgrade.PackageIdentifier) version $($Upgrade.PackageVersion) [$($_.Exception.Message)]")
-        # Revert the changes in the JSON file so that the package can check for updates in the next run
-        Set-Location -Path ..\..\
-        git checkout -- .\packages\$($Upgrade.PackageIdentifier.Substring(0,1).ToLower())\$($Upgrade.PackageIdentifier.ToLower()).json
-        Set-Location -Path .\winget-pkgs\Tools
-    }
-}
-Set-Location -Path ..\..\ # Go back to winget-pkgs-automation directory
+#Set-Location -Path .\winget-pkgs\Tools
+#ForEach ($Upgrade in $UpgradeObject) {
+#    Write-Output -InputObject $Upgrade | Format-List -Property *
+#    try {
+#        If ($Upgrade.YamlCreateParams.AutoUpgrade -eq $true -and $Upgrade.YamlCreateParams.SkipPRCheck -eq $false -and $Upgrade.YamlCreateParams.DeletePreviousVersion -eq $false) {
+#            .\YamlCreate.ps1 -InputObject $Upgrade -AutoUpgrade
+#       } ElseIf ($Upgrade.YamlCreateParams.AutoUpgrade -eq $false -and $Upgrade.YamlCreateParams.SkipPRCheck -eq $true -and $Upgrade.YamlCreateParams.DeletePreviousVersion -eq $false) {
+ #           .\YamlCreate.ps1 -InputObject $Upgrade -SkipPRCheck
+ #       } ElseIf ($Upgrade.YamlCreateParams.AutoUpgrade -eq $false -and $Upgrade.YamlCreateParams.SkipPRCheck -eq $false -and $Upgrade.YamlCreateParams.DeletePreviousVersion -eq $true) {
+  #          .\YamlCreate.ps1 -InputObject $Upgrade -DeletePreviousVersion
+   #     } Else {
+    #        .\YamlCreate.ps1 -InputObject $Upgrade
+     #   }
+   # } catch {
+   #Write-Error "$($Upgrade.PackageIdentifier): $($_.Exception.Message)"
+    ##   $ErrorUpgradingPkgs += @("- $($Upgrade.PackageIdentifier) version $($Upgrade.PackageVersion) [$($_.Exception.Message)]")
+      #  # Revert the changes in the JSON file so that the package can check for updates in the next run
+       # Set-Location -Path ..\..\
+        #git checkout -- .\packages\$($Upgrade.PackageIdentifier.Substring(0,1).ToLower())\$($Upgrade.PackageIdentifier.ToLower()).json
+        #Set-Location -Path .\winget-pkgs\Tools
+    #}
+#}
+#Set-Location -Path ..\..\ # Go back to winget-pkgs-automation directory
 
 Write-Output "`nComment the results of the run on the issue #200 (Automation Health)`n"
 $Headers = @{
