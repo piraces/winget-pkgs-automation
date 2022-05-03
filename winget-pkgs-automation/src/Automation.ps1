@@ -92,7 +92,7 @@ Write-Output 'Blocked microsoft edge updates, installed powershell-yaml, importe
 
 $UpgradeObject = @()
 Write-Output 'Checking for updates...'
-ForEach ($Package in $(Get-ChildItem .\packages\ -Recurse -File | Get-Content -Raw | ConvertFrom-Json | Where-Object { $_.SkipPackage -eq $false })) {
+ForEach ($Package in (Get-ChildItem .\packages\ -Recurse -File | Get-Content -Raw | ConvertFrom-Json).Where({ $_.SkipPackage -eq $false })) {
     $_Object = New-Object -TypeName System.Management.Automation.PSObject
     $_Object | Add-Member -MemberType NoteProperty -Name 'PackageIdentifier' -Value $Package.Identifier
     $VersionRegex = $Package.VersionRegex
