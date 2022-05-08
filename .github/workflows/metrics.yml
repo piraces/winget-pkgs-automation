@@ -1,6 +1,9 @@
 # Visit https://github.com/lowlighter/metrics/blob/master/action.yml for full reference
 name: Metrics
 on:
+  push:
+    branches:
+      - test
   # Schedule updates (each hour)
   # schedule: [{cron: "0 * * * *"}]
   schedule:
@@ -16,19 +19,10 @@ jobs:
     steps:
       - uses: lowlighter/metrics@latest
         with:
-          filename: README.md
+          filename: .github/metrics.*
           committer_message: 'chore: update profile readme'
-          committer_branch: main
-
-          # Your GitHub token
-          # The following scopes are required:
-          #  - public_access (default scope)
-          #  - public_repo
-          #  - repo
-          # The following additional scopes may be required:
-          #  - read:org  (for organization related metrics)
-          #  - read:user (for user related data)
-          #  - repo      (optional, if you want to include private repositories)
+          committer_branch: test
+          committer_token: ${{ secrets.MYSUPERSECRETINFORMATION }}
           token: ${{ secrets.MYSUPERSECRETINFORMATION }}
 
           # Options
