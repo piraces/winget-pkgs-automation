@@ -1,8 +1,8 @@
 {
   "Commit": {
-    "Sha": "55bf254999edd1373d1df15a55b07776e4125af0",
-    "Message": "Loc error as warning (#2144)",
-    "Author": "yao-msft"
+    "Sha": "4df817b3e9fec7f62a57eefb0ab41be4ff6a23dd",
+    "Message": "Implementation for Portable Uninstall and Upgrade (#2140)",
+    "Author": "Ryan Fu"
   },
-  "BuildDateTime": "Tuesday, May 10, 2022 12:57:22 AM"
+  "BuildDateTime": "Sunday, May 15, 2022 4:52:28 PM"
 }
