@@ -180,7 +180,7 @@ $Headers = @{
     Authorization = "Token $AuthToken"
     Accept        = 'application/vnd.github.v3+json'
 }
-$CommentBody = "### Results of Automation run [$env:GITHUB_RUN_NUMBER](https://github.com/vedantmgoyal2009/vedantmgoyal2009/actions/runs/$($env:GITHUB_RUN_ID))\r\n"
+$CommentBody = "### Results of Automation run [$env:GITHUB_RUN_NUMBER](https://github.com/vedantmgoyal2009/vedantmgoyal2009/actions/runs/$($env:GITHUB_RUN_ID))\r\n "
 $CommentBody += '**Error while checking for updates for packages:** ' # Add space for better formatting
 If ($ErrorGettingUpdates.Count -gt 0) {
     $CommentBody += "$($ErrorGettingUpdates.Count) packages had errors while checking for updates.\r\n"
@@ -196,15 +196,15 @@ If ($ErrorUpgradingPkgs.Count -gt 0) {
     $CommentBody += 'All packages were updated successfully :tada:'
 }
 # Delete all previous comments since we are already reverting the changes in the JSON file so that they can be upgarded in the next run
-(Invoke-RestMethod -Method Get -Uri 'https://api.github.com/repos/vedantmgoyal2009/vedantmgoyal2009/issues/200/comments').Where({ $_.user.login -eq 'winget-pkgs-automation-bot[bot]' }).ForEach({
-    Invoke-RestMethod -Method Delete -Uri "https://api.github.com/repos/vedantmgoyal2009/vedantmgoyal2009/issues/comments/$($_.id)" -Headers $Headers | Out-Null
-})
+#(Invoke-RestMethod -Method Get -Uri 'https://api.github.com/repos/vedantmgoyal2009/vedantmgoyal2009/issues/200/comments').Where({ $_.user.login -eq 'winget-pkgs-automation-bot[bot]' }).ForEach({
+#    Invoke-RestMethod -Method Delete -Uri "https://api.github.com/repos/vedantmgoyal2009/vedantmgoyal2009/issues/comments/$($_.id)" -Headers $Headers | Out-Null
+#})
 # Add the new comment to the issue containing the results of the automation run
 Invoke-RestMethod -Method Post -Uri 'https://api.github.com/repos/vedantmgoyal2009/vedantmgoyal2009/issues/200/comments' -Body "{`"body`":$($CommentBody | ConvertTo-Json)}" -Headers $Headers
 
 # Update packages in repository
 Write-Output "`nUpdating packages"
-git pull # to be on a safe side
-git add .\packages\*
-git commit -m "build(wpa): update packages [$env:GITHUB_RUN_NUMBER]"
-git push https://x-access-token:$($AuthToken)@github.com/vedantmgoyal2009/vedantmgoyal2009.git
+#git pull # to be on a safe side
+#git add .\packages\*
+#git commit -m "build(wpa): update packages [$env:GITHUB_RUN_NUMBER]"
+#git push https://x-access-token:$($AuthToken)@github.com/vedantmgoyal2009/vedantmgoyal2009.git
